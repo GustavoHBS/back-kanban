@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { LoginRoutes } from '../../../auth/controllers';
+import { LoginController } from '../../../auth/controllers';
 import { inject, singleton } from 'tsyringe';
 import { HttpMethod, HttpServer } from '../http-server';
 

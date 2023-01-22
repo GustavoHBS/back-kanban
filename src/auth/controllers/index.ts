@@ -4,21 +4,18 @@ import { inject, injectable } from "tsyringe";
 import { Login } from "../services/login";
 
 @injectable()
-export class LoginRoutes {
-    constructor(@inject("Login") private loginService: Login){
-        console.log("OLA LOGIN")
-    }
+export class LoginController {
+    constructor(@inject("Login") private loginService: Login){}
 
-    registryRoutes(httpServer: HttpServer){
+    registryRoutes = (httpServer: HttpServer) => {
         httpServer.setRoute(HttpMethod.POST, '/login', this.login);
     }
 
     login = (request: Request, resp: Response) =>{
         const body = request.body;
-        console.log("this.loginService", this)
         const response = this.loginService.execute(body.login, body.senha);
         if(response.validLogin){
-            return resp.send({token: response.token});
+            return resp.send(response.tokenData);
         }
         const INVALID_AUTH_STATUS = 401;
         return resp.status(INVALID_AUTH_STATUS).send({message: response.message});

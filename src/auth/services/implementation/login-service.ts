@@ -13,7 +13,7 @@ export class LoginService implements Login {
         if(this.defaultUser === user && this.defaultPassword === password){
             return {
                 validLogin: true,
-                token: this.authentication.generateToken({user})
+                tokenData: this.authentication.generateToken({user})
             };
         }
         return {

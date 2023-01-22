@@ -1,7 +1,10 @@
 export interface LoginResponse {
     validLogin: boolean,
     message?: string;
-    token?:  string;
+    tokenData?:  {
+        token: string;
+        expiresIn: number;
+    };
 }
 
 export interface Login {

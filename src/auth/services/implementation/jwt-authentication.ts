@@ -3,9 +3,16 @@ import { Authentication } from "../authentication";
 
 export class JwtAuthentication implements Authentication {
     private secret = process.env.TOKEN_SECRET;
+    private expiresIn = process.env.EXPIRES_IN || 36000;
 
     generateToken(data: Record<string, any>) {
-        return jwt.sign(data, this.secret);
+        const expiresIn = this.expiresIn;
+        return {
+            token: jwt.sign(data, this.secret, {
+                expiresIn
+            }),
+            expiresIn
+        }
     }
 
     validToken(token: string) {
