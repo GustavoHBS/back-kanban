@@ -8,4 +8,5 @@ export enum HttpMethod {
 export interface HttpServer {
     start(port: number);
     setRoute(method: HttpMethod, route: string, callback: Function);
+    addMiddleware(callback: any, path?: any);
 }

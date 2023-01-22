@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { HttpMethod, HttpServer } from "src/setup/server/http-server";
+import { HttpMethod, HttpServer } from "../../setup/server/http-server";
 import { inject } from "tsyringe";
 
 export class CardsRoutes {

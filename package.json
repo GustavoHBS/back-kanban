@@ -2,8 +2,12 @@
   "name": "back-kanban",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only --inspect -- ./src/main.ts",
+    "lint": "eslint --fix --ext .ts,.json .",
+    "start": "node ./dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,13 +22,18 @@
   },
   "homepage": "https://github.com/GustavoHBS/back-kanban#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
+    "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.7.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.15",
     "@types/jsonwebtoken": "^9.0.1",
-    "babel-plugin-transform-typescript-metadata": "^0.3.2"
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.9.4"
   }
 }
