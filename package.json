@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/GustavoHBS/back-kanban#readme",
   "dependencies": {
+    "@prisma/client": "^4.9.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
