@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  database:
+    image: postgres:14.1-alpine
+    container_name: database
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - back-kanban
+
+  # system:
+#image: node:18
+#container_name: banking-system
+#working_dir: /home/system
+#env_file:
+#  - .env
+#environment:
+#  - TZ=America/Sao_Paulo
+#volumes:
+#  - .:/home/system
+#ports:
+#  - '3000:3000'
+#networks:
+#  - back-kanban
+#depends_on:
+#  - database
+#command: bash -c "npm i && npm run build && npm run start:prod"
+networks:
+  back-kanban:
+    driver: bridge
+volumes:
+  db:
+    driver: local

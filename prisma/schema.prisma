@@ -8,8 +8,10 @@ datasource db {
 }
 
 model Cards {
-  id    String @id @default(uuid())
-  titulo String
+  id       String @id @default(uuid())
+  titulo   String
   conteudo String
-  lista String
+  lista    String
+
+  @@map("cards")
 }
