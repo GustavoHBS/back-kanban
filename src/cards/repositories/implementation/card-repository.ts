@@ -7,6 +7,13 @@ export class CardRepositoryImpl implements CardRepository {
   constructor() {
     this.database = new PrismaClient();
   }
+  findCardById(id: string): Promise<Card | null> {
+    return this.database.cards.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
   async removeCard(id: string): Promise<void> {
     await this.database.cards.delete({
       where: { id },

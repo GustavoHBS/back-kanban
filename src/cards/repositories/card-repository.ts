@@ -5,4 +5,5 @@ export interface CardRepository {
   insertCard(card: Omit<Card, 'id'>): Promise<Card>;
   updateCard(card: Card): Promise<Card>;
   removeCard(id: string): Promise<void>;
+  findCardById(id: string): Promise<Card | null>;
 }
