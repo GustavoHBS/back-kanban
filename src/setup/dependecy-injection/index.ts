@@ -1,13 +1,12 @@
-import { LoginService } from '../../auth/services/implementation/login-service';
+import { LoginController } from 'src/auth/controllers';
+import { JwtAuthentication } from 'src/auth/services/implementation/jwt-authentication';
+import { LoginService } from 'src/auth/services/implementation/login-service';
+import { CardsController } from 'src/cards/controllers';
+import { CardRepositoryImpl } from 'src/cards/repositories/implementation/card-repository';
+import { CardsServiceImpl } from 'src/cards/services/implementation/cards-service';
 import { container, Lifecycle } from 'tsyringe';
-import { LoginController } from '../../auth/controllers';
-
-import { CardsController } from '../../cards/controllers';
-import { ExpressServer } from '../server/implementation/express-server';
 import { AuthMiddleware } from '../middlewares/implementation/auth-middleware';
-import { JwtAuthentication } from '../../auth/services/implementation/jwt-authentication';
-import { CardsServiceImpl } from '../../cards/services/implementation/cards-service';
-import { CardRepositoryImpl } from '../../cards/repositories/implementation/card-repository';
+import { ExpressServer } from '../server/implementation/express-server';
 
 container.register('HttpServer', ExpressServer, {
   lifecycle: Lifecycle.Singleton,

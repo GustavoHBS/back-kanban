@@ -1,11 +1,12 @@
-import { HttpMethod, HttpServer } from '../../setup/server/http-server';
-import { inject, injectable } from 'tsyringe';
-import { Login } from '../services/login';
+import { HttpServer, HttpMethod } from 'src/setup/server/http-server';
 import {
   Request,
   Response,
-} from '../../setup/server/implementation/express-server';
+} from 'src/setup/server/implementation/express-server';
+import { HTTP_STATUS } from 'src/shared/enums/http-status';
 import { Controller } from 'src/shared/interfaces/controller';
+import { inject, injectable } from 'tsyringe';
+import { Login } from '../services/login';
 
 @injectable()
 export class LoginController implements Controller {
@@ -18,10 +19,10 @@ export class LoginController implements Controller {
   login = (request: Request, resp: Response) => {
     const body = request.body;
     const response = this.loginService.execute(body.login, body.senha);
-    if (response.validLogin) {
-      return resp.send(response.tokenData);
-    }
-    const INVALID_AUTH_STATUS = 401;
-    return resp.status(INVALID_AUTH_STATUS).send({ message: response.message });
+    return response.validLogin
+      ? resp.send(response.tokenData)
+      : resp
+          .status(HTTP_STATUS.UNAUTHORIZED)
+          .send({ message: response.message });
   };
 }

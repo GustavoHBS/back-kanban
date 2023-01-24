@@ -1,13 +1,15 @@
-import { HttpMethod, HttpServer } from '../../setup/server/http-server';
-import { inject, injectable } from 'tsyringe';
-import { Controller } from '../../shared/interfaces/controller';
+import { HttpServer, HttpMethod } from 'src/setup/server/http-server';
 import {
   Request,
   Response,
-} from '../../setup/server/implementation/express-server';
-import { CardsService } from '../services/cards-service';
+} from 'src/setup/server/implementation/express-server';
+import { HTTP_STATUS } from 'src/shared/enums/http-status';
+import { BadRequestError } from 'src/shared/errors/bad-request-error';
+import { NotFoundError } from 'src/shared/errors/not-found-error';
+import { Controller } from 'src/shared/interfaces/controller';
+import { inject, injectable } from 'tsyringe';
 import { payloadToDomain } from '../mapper/card-mapper';
-import { NotFoundError } from '../../shared/errors/not-found-error';
+import { CardsService } from '../services/cards-service';
 
 @injectable()
 export class CardsController implements Controller {
@@ -26,47 +28,60 @@ export class CardsController implements Controller {
   };
 
   private insertCard = async (req: Request, res: Response) => {
-    const body = req.body;
     try {
-      const card = payloadToDomain(body);
+      const card = this.getCardOrThrowBadRequest(req.body);
       const insertedCard = await this.cardsService.insertCard(card);
-      return res.status(201).send(insertedCard);
-    } catch (_err) {
-      return res.status(400).send();
+      return res.status(HTTP_STATUS.CREATED).send(insertedCard);
+    } catch (err) {
+      if (err instanceof BadRequestError) {
+        res.status(HTTP_STATUS.BAD_REQUEST).send();
+      }
+      return res.status(HTTP_STATUS.SERVER_ERROR).send();
     }
   };
 
   private updateCard = async (req: Request, res: Response) => {
-    const body = req.body;
-    const { id } = req.params;
     try {
+      const body = req.body;
+      const { id } = req.params;
       if (!id || id !== body.id) {
         throw new Error();
       }
-      const card = payloadToDomain(body);
+      const card = this.getCardOrThrowBadRequest(body);
       const insertedCard = await this.cardsService.updateCard(card);
-      return res.status(200).send(insertedCard);
+      return res.status(HTTP_STATUS.OK).send(insertedCard);
     } catch (err: unknown) {
       if (err instanceof NotFoundError) {
-        return res.status(404).send();
+        return res.status(HTTP_STATUS.NOT_FOUND).send();
       }
-      return res.status(400).send();
+      if (err instanceof BadRequestError) {
+        res.status(HTTP_STATUS.BAD_REQUEST).send();
+      }
+      return res.status(HTTP_STATUS.BAD_REQUEST).send();
     }
   };
 
   private deleteCard = async (req: Request, res: Response) => {
-    const { id } = req.params;
     try {
+      const { id } = req.params;
       if (!id) {
         throw new NotFoundError();
       }
       const cards = await this.cardsService.deleteCard(id);
-      return res.status(200).send(cards);
+      return res.status(HTTP_STATUS.OK).send(cards);
     } catch (err: unknown) {
       if (err instanceof NotFoundError) {
-        return res.status(404).send();
+        return res.status(HTTP_STATUS.NOT_FOUND).send();
       }
-      return res.status(500).send();
+      return res.status(HTTP_STATUS.SERVER_ERROR).send();
     }
+  };
+
+  private getCardOrThrowBadRequest = (body: unknown) => {
+    const parsed = payloadToDomain.safeParse(body);
+    if (parsed.success) {
+      return parsed.data;
+    }
+    throw new BadRequestError();
   };
 }

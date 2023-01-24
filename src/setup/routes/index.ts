@@ -1,8 +1,8 @@
-import { HttpServer } from '../server/http-server';
+import { LoginController } from 'src/auth/controllers';
+import { CardsController } from 'src/cards/controllers';
+import { Controller } from 'src/shared/interfaces/controller';
 import { container, InjectionToken } from 'tsyringe';
-import { LoginController } from '../../auth/controllers';
-import { Controller } from '../../shared/interfaces/controller';
-import { CardsController } from '../../cards/controllers';
+import { HttpServer } from '../server/http-server';
 
 export const route = (httpServer: HttpServer) => {
   const controllers: InjectionToken<Controller>[] = [

@@ -1,8 +1,8 @@
-import { Card } from '../../../cards/card';
-import { CardRepository } from '../../../cards/repositories/card-repository';
+import { Card } from 'src/cards/card';
+import { CardRepository } from 'src/cards/repositories/card-repository';
+import { NotFoundError } from 'src/shared/errors/not-found-error';
 import { inject, injectable } from 'tsyringe';
 import { CardsService } from '../cards-service';
-import { NotFoundError } from '../../../shared/errors/not-found-error';
 
 @injectable()
 export class CardsServiceImpl implements CardsService {

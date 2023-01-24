@@ -4,12 +4,13 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint --fix --ext .ts,.json .",
+    "build": "tsc --project tsconfig.json && tsc-alias -p tsconfig.json",
     "start": "node ./dist/main.js",
-    "start:dev": "ts-node-dev --respawn --transpile-only --inspect -- ./src/main.ts",
+    "start:dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/main.ts",
+    "lint": "eslint --fix --ext .ts,.json .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migration": "prisma migrate dev --name "
+    "migration": "prisma migrate dev --name ",
+    "migration:push": "prisma db push"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/GustavoHBS/back-kanban#readme",
   "dependencies": {
     "@prisma/client": "^4.9.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
@@ -32,6 +34,7 @@
     "zod": "^3.20.2"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.13",
     "@types/express": "^4.17.15",
     "@types/jsonwebtoken": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
@@ -41,6 +44,8 @@
     "prisma": "^4.9.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.2",
+    "tsconfig-paths": "^4.1.2",
     "typescript": "^4.9.4"
   }
 }

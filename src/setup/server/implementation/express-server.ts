@@ -1,6 +1,7 @@
 import * as express from 'express';
 import { singleton } from 'tsyringe';
 import { HttpMethod, HttpServer } from '../http-server';
+import * as cors from 'cors';
 
 import {
   Request as RequestExpress,
@@ -16,6 +17,7 @@ export class ExpressServer implements HttpServer {
   private app: express.Express;
   constructor() {
     this.app = express();
+    this.app.use(cors());
     this.app.use(express.json());
   }
 
