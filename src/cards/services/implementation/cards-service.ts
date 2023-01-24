@@ -9,6 +9,12 @@ export class CardsServiceImpl implements CardsService {
   constructor(
     @inject('CardRepository') private cardRepository: CardRepository,
   ) {}
+  async deleteCard(id: string): Promise<Card[] | never> {
+    await this.cardRepository.removeCard(id).catch(() => {
+      throw new NotFoundError();
+    });
+    return this.getCards();
+  }
   updateCard(card: Card): Promise<Card | never> {
     return this.cardRepository.updateCard(card).catch((err) => {
       throw new NotFoundError();

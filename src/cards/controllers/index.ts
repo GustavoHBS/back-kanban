@@ -20,6 +20,7 @@ export class CardsController implements Controller {
     httpServer.setRoute(HttpMethod.GET, '/cards', this.getCards);
     httpServer.setRoute(HttpMethod.POST, '/cards', this.insertCard);
     httpServer.setRoute(HttpMethod.PUT, '/cards/:id', this.updateCard);
+    httpServer.setRoute(HttpMethod.DEL, '/cards/:id', this.deleteCard);
   };
 
   private getCards = async (_req: Request, res: Response) => {
@@ -47,12 +48,28 @@ export class CardsController implements Controller {
       }
       const card = updatePayloadToDomain(body);
       const insertedCard = await this.cardsService.updateCard(card);
-      return res.status(201).send(insertedCard);
+      return res.status(200).send(insertedCard);
     } catch (err: unknown) {
       if (err instanceof NotFoundError) {
         return res.status(404).send();
       }
       return res.status(400).send();
+    }
+  };
+
+  private deleteCard = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      if (!id) {
+        throw new NotFoundError();
+      }
+      const cards = await this.cardsService.deleteCard(id);
+      return res.status(200).send(cards);
+    } catch (err: unknown) {
+      if (err instanceof NotFoundError) {
+        return res.status(404).send();
+      }
+      return res.status(500).send();
     }
   };
 }

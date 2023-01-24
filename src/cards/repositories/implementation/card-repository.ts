@@ -7,6 +7,11 @@ export class CardRepositoryImpl implements CardRepository {
   constructor() {
     this.database = new PrismaClient();
   }
+  async removeCard(id: string): Promise<void> {
+    await this.database.cards.delete({
+      where: { id },
+    });
+  }
   updateCard(card: Card): Promise<Card> {
     const { id, conteudo, lista, titulo } = card;
     return this.database.cards.update({
