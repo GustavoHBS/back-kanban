@@ -7,6 +7,15 @@ export class CardRepositoryImpl implements CardRepository {
   constructor() {
     this.database = new PrismaClient();
   }
+  updateCard(card: Card): Promise<Card> {
+    const { id, conteudo, lista, titulo } = card;
+    return this.database.cards.update({
+      data: { conteudo, lista, titulo },
+      where: {
+        id,
+      },
+    });
+  }
 
   async getCards(): Promise<Card[]> {
     return this.database.cards.findMany();

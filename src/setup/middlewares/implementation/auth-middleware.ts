@@ -20,13 +20,15 @@ export class AuthMiddleware implements Middleware {
   }
 
   private checkToken = async (req: Request, res: Response, next: Next) => {
-    if (req.path.includes('login')) {
+    if (req.baseUrl.includes('login')) {
       return next();
     }
     const token = req.headers.authorization;
-    const isValid = await this.authentication.validToken(token);
-    if (isValid) {
-      return next();
+    if (token) {
+      const isValid = await this.authentication.validToken(token);
+      if (isValid) {
+        return next();
+      }
     }
     return res.status(401).send();
   };

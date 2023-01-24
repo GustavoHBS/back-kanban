@@ -9,8 +9,8 @@ import { middlewares } from './setup/middlewares';
 
 class Main {
   constructor(@inject('HttpServer') httpServer: HttpServer) {
-    route(httpServer);
     middlewares(httpServer);
+    route(httpServer);
     httpServer.start(5000);
   }
 }
